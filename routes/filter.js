@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/v1', async function (req, res, next) {
     try {
-        const raw_data = await tool.preFilter('data-6k.xlsx')
+        const raw_data = await tool.preFilter('DATA2.xlsx')
 
         const data = await tool.getListLastName(raw_data)
         const response = await tool.redirectToAPI(data.arrLastName, data.original_data)
@@ -27,7 +27,7 @@ router.get('/v1', async function (req, res, next) {
 
 router.get('/v1/data', async function (req, res, next) {
 
-    return res.send(JSON.parse(await tool.readFileExcel("summary_4_file.txt")))
+    return res.send(JSON.parse(await tool.readFileExcel("result.txt")))
 });
 
 
