@@ -49,7 +49,7 @@ class Tool {
     }
 
     async readFileExcel(name) {
-        const filePath = path.resolve("/Users/loivngoo/Projects/gender-api-tool/", name);
+        const filePath = path.resolve("/var/www/credit-check-tool/credit-check-tool/", name);
         const file = fs.readFileSync(filePath, 'utf-8');
         return file;
     }
@@ -82,7 +82,7 @@ class Tool {
     async redirectToAPI(arrLastName, original_data) {
         let response = []
         let data = null
-        for (let i = 0; i < 1000; i++) {
+        for (let i = 4000; i < arrLastName.length; i++) {
             data = {
                 first_name: arrLastName[i],
                 country: ""
