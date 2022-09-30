@@ -49,7 +49,9 @@ class Tool {
     }
 
     async readFileExcel(name) {
-        const filePath = path.resolve("/var/www/credit-check-tool/credit-check-tool/", name);
+        // const filePath = path.resolve("/var/www/credit-check-tool/credit-check-tool/", name);
+        const filePath = path.resolve(__dirname, name);
+
         const file = fs.readFileSync(filePath, 'utf-8');
         return file;
     }
@@ -65,10 +67,43 @@ class Tool {
         for (let i = 0; i < raw_data.length; i++) {
             attempt = raw_data[i]
             if (attempt.length !== 0) {
-                const name = (attempt[0].split("|")[5]).split(' ').at(-1)
-
+                const name = (attempt.split("|")[2]).split(' ').at(-1)
                 dataAfter1stClean.push(name)
                 original_data.push(attempt)
+            }
+        }
+
+        return {
+            arrLastName: dataAfter1stClean,
+            original_data: original_data
+
+        }
+    }
+
+
+    async getPhone11(raw_data) {
+        let original_data = []
+        let dataAfter1stClean = []
+        let attempt = null
+
+        for (let j = 0; j < raw_data.length; j++) {
+            attempt = raw_data[j][0]
+            if (attempt) {
+                const _arr = attempt.split('|')
+                let tmp = null
+
+                console.log(_arr);
+                _arr.forEach((value) => {
+                    tmp = Number(value.replace(/[^0-9]/g, ''))
+                    if (tmp.toString().length == 11 || tmp.toString().length == 10) {
+
+                        console.log("OK: ",tmp);
+                        dataAfter1stClean.push(attempt)
+                        original_data.push(attempt)
+                    } else {
+                        console.log("FAILED: ", tmp);
+                    }
+                })
             }
         }
 
@@ -82,8 +117,7 @@ class Tool {
     async redirectToAPI(arrLastName, original_data) {
         let response = []
         let data = null
-        // for (let i = 0; i < arrLastName.length; i++) {
-        for (let i = 0; i < arrLastName.length; i++) {
+        for (let i = 0; i < 5; i++) {
 
             data = {
                 first_name: arrLastName[i],
@@ -127,7 +161,7 @@ class Tool {
         let tmp = null
         for (let i = 5; i < _arr.length; i++) {
             tmp = Number(_arr[i].replace(/[^0-9]/g, ''))
-            if (tmp.toString().length == 10) {
+            if (tmp.toString().length == 10 || tmp.toString().length == 11) {
                 return true
             }
         }
