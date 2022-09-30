@@ -3,7 +3,6 @@ const xlsx = require('node-xlsx')
 const fs = require('fs')
 const fetch = require('node-fetch')
 require('dotenv').config();
-
 class Tool {
     constructor() { }
 
@@ -67,8 +66,9 @@ class Tool {
         for (let i = 0; i < raw_data.length; i++) {
             attempt = raw_data[i]
             if (attempt.length !== 0) {
-                const name = (attempt.split("|")[2]).split(' ').at(-1)
-                dataAfter1stClean.push(name)
+                const name = (attempt.split("|")[0]);
+                const lastName = name.trim().split(' ').at(-1)
+                dataAfter1stClean.push(lastName)
                 original_data.push(attempt)
             }
         }
@@ -85,7 +85,6 @@ class Tool {
         let original_data = []
         let dataAfter1stClean = []
         let attempt = null
-
         for (let j = 0; j < raw_data.length; j++) {
             attempt = raw_data[j][0]
             if (attempt) {
@@ -93,17 +92,17 @@ class Tool {
                 let tmp = null
 
                 console.log(_arr);
-                _arr.forEach((value) => {
-                    tmp = Number(value.replace(/[^0-9]/g, ''))
+                for (let index = 0; index < _arr.length; index++) {
+                    tmp = Number(_arr[index].replace(/[^0-9]/g, ''))
                     if (tmp.toString().length == 11 || tmp.toString().length == 10) {
 
-                        console.log("OK: ",tmp);
+                        console.log("OK: ", tmp);
                         dataAfter1stClean.push(attempt)
                         original_data.push(attempt)
                     } else {
                         console.log("FAILED: ", tmp);
                     }
-                })
+                }
             }
         }
 
@@ -117,13 +116,12 @@ class Tool {
     async redirectToAPI(arrLastName, original_data) {
         let response = []
         let data = null
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < arrLastName.length; i++) {
 
             data = {
                 first_name: arrLastName[i],
                 country: ""
             }
-
 
             console.log()
 

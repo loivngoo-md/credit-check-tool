@@ -16,7 +16,7 @@ router.get('/v1', async function (req, res, next) {
         const data = await tool.getListLastName(data1st.original_data)
 
         // const response = data.arrLastName
-      const response = await tool.redirectToAPI(data.arrLastName, data.original_data)
+        const response = await tool.redirectToAPI(data.arrLastName, data.original_data)
         await tool.exportFile(response)
 
         return res.json({
