@@ -17,7 +17,7 @@ class Tool {
 
         let _arr = []
         const workSheetsFromFile = xlsx.parse(filePath);
-        let data = workSheetsFromFile[0]['data']
+        let data = workSheetsFromFile[4]['data']
 
         data.forEach(element => {
             if (element !== undefined) {
