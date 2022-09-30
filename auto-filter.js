@@ -82,7 +82,9 @@ class Tool {
     async redirectToAPI(arrLastName, original_data) {
         let response = []
         let data = null
-        for (let i = 0; i < arrLastName.length; i++) {
+        // for (let i = 0; i < arrLastName.length; i++) {
+        for (let i = 0; i < 10; i++) {
+
             data = {
                 first_name: arrLastName[i],
                 country: ""
@@ -105,15 +107,31 @@ class Tool {
             const finalResult = await infoUser.json()
 
             if (finalResult['result_found'] && finalResult['gender'] === 'male') {
-                console.log("Element: ", i, "---", finalResult['first_name'], '--- OK')
-                response.push(`${original_data[i].toString()}`)
-            } else {
 
+                if (this.filterNumber(original_data[i].toString())) {
+                    response.push(`${original_data[i].toString()}`)
+                    console.log("Element: ", i, "---", finalResult['first_name'], '-- HAS PHONE NUMBER --- OK ')
+                }
+            } else {
+                console.log("Element: ", i, "---", finalResult['first_name'], ' --- FAILED ')
             }
         }
 
         return response
 
+    }
+
+
+    filterNumber(str) {
+        const _arr = str.split('|')
+        let tmp = null
+        for (let i = 5; i < _arr.length; i++) {
+            tmp = Number(_arr[i].replace(/[^0-9]/g, ''))
+            if (tmp.toString().length == 10) {
+                return true
+            }
+        }
+        return false
     }
 
     async start() {

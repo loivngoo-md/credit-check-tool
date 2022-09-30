@@ -16,6 +16,7 @@ router.get('/v1', async function (req, res, next) {
         await tool.exportFile(response)
 
         return res.json({
+            count: response.length,
             data: response
         })
     } catch (error) {
