@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/v1', async function (req, res, next) {
     try {
-        const raw_data = await tool.preFilter('data/data_10k.xlsx')
+        const raw_data = await tool.preFilter('data/data_5k6.xlsx')
 
         const data1st = await tool.getPhone11(raw_data)
 
