@@ -17,7 +17,7 @@ class Tool {
 
         let _arr = []
         const workSheetsFromFile = xlsx.parse(filePath);
-        let data = workSheetsFromFile[4]['data']
+        let data = workSheetsFromFile[0]['data']
 
         data.forEach(element => {
             if (element !== undefined) {
@@ -65,7 +65,7 @@ class Tool {
         for (let i = 0; i < raw_data.length; i++) {
             attempt = raw_data[i]
             if (attempt.length !== 0) {
-                const name = (attempt[0].split("|")[0]).split(' ').at(-1)
+                const name = (attempt[0].split("|")[4]).split(' ').at(-1)
 
                 dataAfter1stClean.push(name)
                 original_data.push(attempt)
