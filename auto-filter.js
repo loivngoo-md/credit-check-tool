@@ -55,21 +55,58 @@ class Tool {
         return file;
     }
 
-    async removeEmptyElement() {
+    parseName(input) {
+        var fullName = input || "";
+        var result = {};
 
+        if (fullName.length > 0) {
+            var nameTokens = fullName.match(/[A-ZÁ-ÚÑÜ][a-zá-úñü]+|([aeodlsz]+\s+)+[A-ZÁ-ÚÑÜ][a-zá-úñü]+/g) || [];
+
+            if (nameTokens.length > 3) {
+                result.name = nameTokens.slice(0, 2).join(' ');
+            } else {
+                result.name = nameTokens.slice(0, 1).join(' ');
+            }
+
+            if (nameTokens.length > 2) {
+                result.lastName = nameTokens.slice(-2, -1).join(' ');
+                result.secondLastName = nameTokens.slice(-1).join(' ');
+            } else {
+                result.lastName = nameTokens.slice(-1).join(' ');
+                result.secondLastName = "";
+            }
+        }
+
+        return result;
     }
 
     async getListLastName(raw_data) {
         let original_data = []
         let dataAfter1stClean = []
         let attempt = null
+        let lastName = null
         for (let i = 0; i < raw_data.length; i++) {
-            attempt = raw_data[i]
+            attempt = raw_data[i].trim()
+
+
             if (attempt.length !== 0) {
-                const name = (attempt.split("|")[0]);
-                const lastName = name.trim().split(' ').at(-1)
-                dataAfter1stClean.push(lastName)
-                original_data.push(attempt)
+                const listName = (attempt.split("|")[0]);
+                // console.log(listName);
+                lastName = listName.toString().split(' ').at(-1)
+                console.log(lastName);
+                if (lastName) {
+                    dataAfter1stClean.push(lastName)
+                    original_data.push(attempt)
+                }
+                // for (let j = 0; j < listName.length; j++) {
+                //     if (!Number(listName[j])) {
+                //         lastName = this.parseName(listName[j])
+                //         if (lastName) {
+                //             dataAfter1stClean.push(lastName)
+                //             original_data.push(attempt)
+                //         }
+                //     }
+                // }
             }
         }
 
@@ -91,16 +128,15 @@ class Tool {
                 const _arr = attempt.split('|')
                 let tmp = null
 
-                console.log(_arr);
                 for (let index = 0; index < _arr.length; index++) {
                     tmp = Number(_arr[index].replace(/[^0-9]/g, ''))
                     if (tmp.toString().length == 11 || tmp.toString().length == 10) {
 
-                        console.log("OK: ", tmp);
+                        // console.log("OK: ", tmp);
                         dataAfter1stClean.push(attempt)
                         original_data.push(attempt)
                     } else {
-                        console.log("FAILED: ", tmp);
+                        // console.log("FAILED: ", tmp);
                     }
                 }
             }
@@ -116,7 +152,9 @@ class Tool {
     async redirectToAPI(arrLastName, original_data) {
         let response = []
         let data = null
-        for (let i = 0; i < arrLastName.length; i++) {
+        // for (let i = 0; i < arrLastName.length; i++) {
+        for (let i = 0; i < 10; i++) {
+
 
             data = {
                 first_name: arrLastName[i],
