@@ -152,8 +152,8 @@ class Tool {
     async redirectToAPI(arrLastName, original_data) {
         let response = []
         let data = null
-        // for (let i = 0; i < arrLastName.length; i++) {
-        for (let i = 0; i < 10; i++) {
+         for (let i = 0; i < arrLastName.length; i++) {
+        //for (let i = 0; i < 10; i++) {
 
 
             data = {
