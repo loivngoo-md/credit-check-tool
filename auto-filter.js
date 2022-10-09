@@ -90,7 +90,7 @@ class Tool {
 
 
             if (attempt.length !== 0) {
-                const listName = (attempt.split("|")[0]);
+                const listName = (attempt.split("|")[7]);
                 // console.log(listName);
                 lastName = listName.toString().split(' ').at(-1)
                 console.log(lastName);
